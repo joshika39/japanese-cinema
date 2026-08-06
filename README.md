@@ -37,4 +37,4 @@ node app.js
 | `Q`     | Move selector to the left            |
 | `E`     | Move selector to the right           |
 | `Enter` | Play the selected movie trailer      |
-| `Ctrl`  | Toggle sit/stand                     |
+| `U`     | Toggle sit/stand                     |
