@@ -1,63 +1,41 @@
-const {app, BrowserWindow} = require('electron');
-const path = require('path');
-const fs = require('fs');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+
+const {
+    PUBLIC_DIRECTORY,
+    writeAssetManifest,
+} = require("../node-js/asset-manifest");
 
 let mainWindow;
 
 function createWindow() {
+    writeAssetManifest();
+
     mainWindow = new BrowserWindow({
         width: 800,
-        height: 550
-        // webPreferences: {nodeIntegration: true, contextIsolation: false}
+        height: 550,
+        webPreferences: {
+            contextIsolation: true,
+            nodeIntegration: false,
+            sandbox: true,
+        },
     });
     mainWindow.removeMenu();
     mainWindow.maximize();
     mainWindow.setFullScreen(true);
-    // mainWindow.webContents.openDevTools();
-    mainWindow.loadFile('public/index.html');
-
+    mainWindow.loadFile(path.join(PUBLIC_DIRECTORY, "index.html"));
 }
 
-const videoFolder = './public/assets/video/';
-const thumbnailFolder = './public/assets/thumbnail/';
-const backgroundFolder = './public/assets/background/';
-let outputV = [];
-let outputT = [];
-let outputB = [];
+app.whenReady().then(createWindow);
 
-
-fs.readdirSync(videoFolder).forEach(file => {
-    if(path.extname(file) === ".mp4")
-        outputV.push(file);
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
 });
 
-fs.readdirSync(thumbnailFolder).forEach(file => {
-    if(path.extname(file) === ".jpg")
-        outputT.push(file);
+app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
 });
-
-fs.readdirSync(backgroundFolder).forEach(file => {
-    if(path.extname(file) === ".jpg")
-        outputB.push(file);
-});
-let stream = fs.createWriteStream('./public/files.js');
-stream.once('open', function(fd) {
-    stream.write(`
-export function videos() {
-    return ${JSON.stringify(outputV)};
-}
-export function thumbnails() {
-    return ${JSON.stringify(outputT)};
-}
-export function panoramas() {
-    return ${JSON.stringify(outputB)};
-}
-`);
-    stream.end();
-});
-
-console.log(JSON.stringify(outputV));
-console.log(JSON.stringify(outputT));
-console.log(JSON.stringify(outputB));
-
-app.on('ready', createWindow);

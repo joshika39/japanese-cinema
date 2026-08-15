@@ -753,7 +753,7 @@ let functionNamespace = {
 
               if (diffX < 20 && diffZ < 20) {
                 camera.position.x = posLX;
-                camera.position.Z = posLZ;
+                camera.position.z = posLZ;
                 satDown = true;
                 selectedChair.i = i;
                 selectedChair.j = j;
@@ -766,7 +766,7 @@ let functionNamespace = {
 
                 if (diffX < 20 && diffZ < 20) {
                   camera.position.x = posRX;
-                  camera.position.Z = posRZ;
+                  camera.position.z = posRZ;
                   satDown = true;
                   selectedChair.i = i;
                   selectedChair.j = j;

@@ -6,6 +6,15 @@ html, body {
     overflow-y: hidden;
 }
 
+#videoCinema,
+#videoPreview {
+    display: none;
+}
+
+#videoCinema {
+    background: #000000;
+}
+
 #blocker {
     position: absolute;
     width: 100%;
@@ -39,4 +48,8 @@ html, body {
     line-height: 24px;
 
     cursor: pointer;
+}
+
+.start-prompt {
+    font-size: 36px;
 }
